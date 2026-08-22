@@ -112,6 +112,7 @@ export default function EditBeritaForm({ berita }: { berita: any }) {
             <option value="Gotong Royong">Gotong Royong</option>
             <option value="Pendidikan">Pendidikan</option>
             <option value="UMKM">UMKM</option>
+            <option value="Artikel">Artikel</option>
           </select>
         </div>
 
