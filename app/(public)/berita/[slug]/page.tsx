@@ -3,6 +3,8 @@ import { ArrowLeft, Calendar, Tag, User, Image as ImageIcon } from "lucide-react
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import ShareButtons from "@/components/berita/ShareButtons";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export const revalidate = 0;
 
@@ -65,11 +67,11 @@ export default async function BeritaDetail({ params }: { params: Promise<{ slug:
         </div>
       )}
 
-      {/* Konten Berita - Untuk saat ini kita merender text murni / pre-wrap */}
+      {/* Konten Berita - Merender markdown agar format seperti bold, italic, dan list bisa berjalan */}
       <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-accent hover:prose-a:text-accent/80">
-        <div className="whitespace-pre-wrap leading-relaxed">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {berita.konten}
-        </div>
+        </ReactMarkdown>
       </div>
 
       {/* Share Buttons */}
