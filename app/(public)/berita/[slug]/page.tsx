@@ -2,8 +2,11 @@ import Link from "next/link";
 import { ArrowLeft, Calendar, Tag, User, Image as ImageIcon } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
+import ShareButtons from "@/components/berita/ShareButtons";
 
 export const revalidate = 0;
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://kkn-desa-kaliombo.vercel.app";
 
 export default async function BeritaDetail({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -18,6 +21,8 @@ export default async function BeritaDetail({ params }: { params: Promise<{ slug:
   if (error || !berita) {
     notFound();
   }
+
+  const articleUrl = `${SITE_URL}/berita/${berita.slug}`;
 
   return (
     <article className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-4xl">
@@ -67,6 +72,12 @@ export default async function BeritaDetail({ params }: { params: Promise<{ slug:
         </div>
       </div>
 
+      {/* Share Buttons */}
+      <div className="mt-12 pt-8 border-t border-border">
+        <ShareButtons url={articleUrl} title={berita.judul} />
+      </div>
+
     </article>
   );
 }
+
