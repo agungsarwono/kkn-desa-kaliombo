@@ -10,6 +10,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Website Profil & Berita Tim KKN Desa Kaliombo",
   description: "Dokumentasi kegiatan dan profil Desa Kaliombo, Kecamatan Pecangaan, Jepara",
+  verification: {
+    google: "DfcnPA8vNyjoQd9odoTvsTMOIwUe72qTLAaS9dWVXGI",
+  },
 };
 
 import { ThemeProvider } from "@/components/ThemeProvider";
