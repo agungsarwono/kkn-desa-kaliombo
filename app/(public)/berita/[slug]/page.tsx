@@ -10,6 +10,41 @@ export const revalidate = 0;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.kknkaliombo.my.id";
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const supabase = await createClient();
+
+  const { data: berita } = await supabase
+    .from("berita")
+    .select("judul, konten, gambar_cover_url")
+    .eq("slug", resolvedParams.slug)
+    .single();
+
+  if (!berita) return {};
+
+  // Hapus karakter markdown/html sederhana untuk deskripsi (maks 160 karakter)
+  const plainText = berita.konten.replace(/[#*`_\[\]()]/g, '').trim();
+  const description = plainText.length > 155 ? plainText.substring(0, 155) + "..." : plainText;
+
+  return {
+    title: `${berita.judul} | KKN Desa Kaliombo`,
+    description: description,
+    openGraph: {
+      title: berita.judul,
+      description: description,
+      url: `${SITE_URL}/berita/${resolvedParams.slug}`,
+      images: berita.gambar_cover_url ? [berita.gambar_cover_url] : [],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: berita.judul,
+      description: description,
+      images: berita.gambar_cover_url ? [berita.gambar_cover_url] : [],
+    }
+  };
+}
+
 export default async function BeritaDetail({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const supabase = await createClient();
